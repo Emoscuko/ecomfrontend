@@ -1,0 +1,8 @@
+<!-- src/app/shared/components/sidebar.component.html -->
+<mat-nav-list>
+    <mat-list-item *ngFor="let link of adminLinks" [routerLink]="link.route" routerLinkActive="active">
+      <mat-icon matListIcon>{{ link.icon }}</mat-icon>
+      <div matLine>{{ link.label }}</div>
+    </mat-list-item>
+  </mat-nav-list>
+  

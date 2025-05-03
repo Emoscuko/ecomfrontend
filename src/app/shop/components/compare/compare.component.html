@@ -1,0 +1,24 @@
+<div class="compare-container">
+  <h2>Compare Products</h2>
+
+  <!-- Clear all -->
+  <button mat-stroked-button color="warn" (click)="clear()">
+    Clear All
+  </button>
+
+  <!-- List each CompareItem -->
+  <div *ngIf="items$ | async as items; else empty">
+    <div *ngFor="let item of items" class="compare-item">
+      <h3>{{ item.product.name }}</h3>
+      <p>Price: {{ item.product.price | currency }}</p>
+      <p>Quantity chosen: {{ item.quantity }}</p>
+      <button mat-button color="warn" (click)="remove(item.product.id)">
+        Remove
+      </button>
+    </div>
+  </div>
+
+  <ng-template #empty>
+    <p>No products in comparison list.</p>
+  </ng-template>
+</div>

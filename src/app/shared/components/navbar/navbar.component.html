@@ -1,0 +1,29 @@
+<!-- src/app/shared/components/navbar.component.html -->
+<mat-toolbar color="primary" class="justify-between">
+    <span class="text-xl font-semibold cursor-pointer" routerLink="/">Drentyol</span>
+    <span class="flex-1"></span> <!-- spacer -->
+    <a mat-button routerLink="/">Shop</a>
+    <a mat-button routerLink="/cart">
+      Cart <mat-icon class="ml-1">shopping_cart</mat-icon>
+      <span *ngIf="cartItemCount" class="badge">{{ cartItemCount }}</span>
+    </a>
+    <a mat-button *ngIf="auth.isLoggedIn()" routerLink="/orders">My Orders</a>
+    <a mat-button *ngIf="auth.isLoggedIn() && auth.isAdmin()" routerLink="/admin">Admin</a>
+    <a mat-button *ngIf="auth.isLoggedIn() && auth.isSeller()" routerLink="/seller">Seller</a>
+    
+    <a mat-button routerLink="/compare">Compare</a>
+    <span *ngIf="compareItemCount" class="badge">{{ compareItemCount }}</span>
+    <span *ngIf="auth.isLoggedIn(); else guestLinks">
+      <button mat-button (click)="logout()">Logout</button>
+    </span>
+    <ng-template #guestLinks>
+      <a mat-button routerLink="/auth/login">Login</a>
+      <a mat-button routerLink="/auth/register">Register</a>
+    </ng-template>
+    <!-- src/app/shared/components/navbar.component.html -->
+<button *ngIf="auth.isLoggedIn() && auth.userRole.includes('CUSTOMER')"
+mat-stroked-button color="accent"
+(click)="openApplyDialog()">Apply for Seller</button>
+
+  </mat-toolbar>
+  

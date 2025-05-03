@@ -1,0 +1,31 @@
+<div class="space-y-6">
+
+    <!-- Existing reviews -->
+    <div *ngFor="let r of reviews" class="border rounded p-4 shadow-sm">
+      <div class="font-semibold">
+        {{ r.author }} • <span class="text-yellow-500">★{{ r.rating }}</span>
+      </div>
+      <p class="mt-2 text-gray-700">{{ r.comment }}</p>
+      <small class="text-gray-400">{{ r.createdAt | date:'medium' }}</small>
+    </div>
+  
+    <!-- Add review -->
+    <h3 class="text-xl font-bold">Write a review</h3>
+    <form (ngSubmit)="submit()" class="space-y-4">
+      <label>
+        Rating:
+        <input type="number" min="1" max="5" [(ngModel)]="rating" name="rating"
+               class="w-16 border text-center rounded">
+      </label>
+      <br>
+      <textarea [(ngModel)]="comment" name="comment" rows="3"
+                placeholder="Share your thoughts…"
+                class="w-full border rounded p-2"></textarea>
+      <br>
+      <button mat-raised-button color="primary" [disabled]="submitting">
+        {{ submitting ? 'Sending…' : 'Submit' }}
+      </button>
+    </form>
+  
+  </div>
+  

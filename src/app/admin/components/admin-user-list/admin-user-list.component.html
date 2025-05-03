@@ -1,0 +1,27 @@
+<!-- src/app/admin/components/admin-user-list.component.html -->
+<h2 class="text-xl font-bold mb-4">Users</h2>
+<table class="min-w-full border">
+  <tr class="bg-gray-100">
+    <th class="p-2">ID</th>
+    <th class="p-2">Name</th>
+    <th class="p-2">Email</th>
+    <th class="p-2">Roles</th>
+    <th class="p-2">Status</th>
+    <th class="p-2 text-right">Actions</th>
+  </tr>
+  <tr *ngFor="let user of users" class="border-t">
+    <td class="p-2">{{ user.id }}</td>
+    <td class="p-2">{{ user.name }}</td>
+    <td class="p-2">{{ user.email }}</td>
+    <td class="p-2">{{ user.role }}</td>
+    <td class="p-2">{{ user.enabled ? 'Active' : 'Disabled' }}</td>
+    <td class="p-2 text-right">
+      <button mat-button color="{{ user.enabled ? 'warn' : 'primary' }}" (click)="toggleUser(user)">
+        {{ user.enabled ? 'Disable' : 'Enable' }}
+      </button>
+    </td>
+  </tr>
+</table>
+<div *ngIf="loading" class="text-center my-4">
+  <mat-progress-spinner mode="indeterminate" diameter="30"></mat-progress-spinner>
+</div>

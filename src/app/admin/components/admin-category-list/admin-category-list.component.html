@@ -1,0 +1,27 @@
+<!-- src/app/admin/components/admin-category-list.component.html -->
+<h2 class="text-xl font-bold mb-4">Categories</h2>
+<div class="mb-4 flex items-center space-x-2">
+  <input [(ngModel)]="newCategoryName" placeholder="New category name" class="border px-2 py-1 rounded" />
+  <input [(ngModel)]="newDescription" placeholder="New category description" class="border px-2 py-1 rounded" />
+  <button mat-raised-button color="primary" (click)="addCategory()">Add Category</button>
+</div>
+<table class="min-w-sm border">
+  <tr class="bg-gray-100">
+    <th class="p-2">#</th>
+    <th class="p-2">Name</th>
+    <th class="p-2">Description</th>
+    <th class="p-2 text-right">Actions</th>
+  </tr>
+  <tr *ngFor="let cat of categories" class="border-t">
+    <td class="p-2">{{ cat.id }}</td>
+    <td class="p-2">{{ cat.name }}</td>
+    <td class="p-2">{{ cat.description }}</td>
+    <td class="p-2 text-right">
+      <button mat-button (click)="editCategory(cat)">Edit</button>
+      <button mat-button color="warn" (click)="deleteCategory(cat)">Delete</button>
+    </td>
+  </tr>
+</table>
+<div *ngIf="loading" class="text-center my-4">
+  <mat-progress-spinner mode="indeterminate" diameter="30"></mat-progress-spinner>
+</div>

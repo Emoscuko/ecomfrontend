@@ -1,4 +1,5 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
+import { AuthService } from './shared/services/auth.service';
 
 @Component({
   selector: 'app-root',
@@ -6,6 +7,14 @@ import { Component } from '@angular/core';
   standalone: false,
   styleUrl: './app.component.css'
 })
-export class AppComponent {
+export class AppComponent implements OnInit {
   title = 'ecommerce-app3';
+  loading: any;
+
+  constructor(private authService: AuthService) {}
+
+  ngOnInit(): void {
+    // Restart the auto-logout timer if a valid token exists
+    this.authService.refreshSessionTimer();
+  }
 }

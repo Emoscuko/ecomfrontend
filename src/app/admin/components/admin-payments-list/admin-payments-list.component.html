@@ -1,0 +1,44 @@
+<mat-card>
+    <mat-card-title>All Payments</mat-card-title>
+    <mat-table [dataSource]="payments">
+  
+      <ng-container matColumnDef="id">
+        <mat-header-cell *matHeaderCellDef> ID </mat-header-cell>
+        <mat-cell *matCellDef="let p"> {{p.id}} </mat-cell>
+      </ng-container>
+  
+      <ng-container matColumnDef="userId">
+        <mat-header-cell *matHeaderCellDef> User ID </mat-header-cell>
+        <mat-cell *matCellDef="let p"> {{p.userId}} </mat-cell>
+      </ng-container>
+  
+      <ng-container matColumnDef="order">
+        <mat-header-cell *matHeaderCellDef> Order # </mat-header-cell>
+        <mat-cell *matCellDef="let p"> {{p.order?.id}} </mat-cell>
+      </ng-container>
+  
+      <ng-container matColumnDef="amount">
+        <mat-header-cell *matHeaderCellDef> Amount </mat-header-cell>
+        <mat-cell *matCellDef="let p"> {{p.amount / 100 | currency:p.currency}} </mat-cell>
+      </ng-container>
+  
+      <ng-container matColumnDef="currency">
+        <mat-header-cell *matHeaderCellDef> Currency </mat-header-cell>
+        <mat-cell *matCellDef="let p"> {{p.currency}} </mat-cell>
+      </ng-container>
+  
+      <ng-container matColumnDef="status">
+        <mat-header-cell *matHeaderCellDef> Status </mat-header-cell>
+        <mat-cell *matCellDef="let p"> {{p.status}} </mat-cell>
+      </ng-container>
+  
+      <ng-container matColumnDef="createdAt">
+        <mat-header-cell *matHeaderCellDef> Created At </mat-header-cell>
+        <mat-cell *matCellDef="let p"> {{p.createdAt | date:'short'}} </mat-cell>
+      </ng-container>
+  
+      <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
+      <mat-row        *matRowDef="let row; columns: displayedColumns;"></mat-row>
+    </mat-table>
+  </mat-card>
+  

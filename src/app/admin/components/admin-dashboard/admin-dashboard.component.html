@@ -1,0 +1,29 @@
+<!-- src/app/admin/components/admin-dashboard.component.html -->
+<h2 class="text-2xl font-bold mb-4">Admin Dashboard</h2>
+<div *ngIf="!loading; else loadingTpl" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+  <mat-card class="text-center py-4">
+    <mat-card-title>Products</mat-card-title>
+    <mat-card-content><span class="text-3xl font-bold">{{ stats.products }}</span></mat-card-content>
+  </mat-card>
+  <mat-card class="text-center py-4">
+    <mat-card-title>Categories</mat-card-title>
+    <mat-card-content><span class="text-3xl font-bold">{{ stats.categories }}</span></mat-card-content>
+  </mat-card>
+  <mat-card class="text-center py-4">
+    <mat-card-title>Orders</mat-card-title>
+    <mat-card-content><span class="text-3xl font-bold">{{ stats.orders }}</span></mat-card-content>
+  </mat-card>
+  <mat-card class="text-center py-4">
+    <mat-card-title>Users</mat-card-title>
+    <mat-card-content><span class="text-3xl font-bold">{{ stats.users }}</span></mat-card-content>
+  </mat-card>
+  <mat-card class="text-center py-4 lg:col-span-4">
+    <mat-card-title>Total Sales</mat-card-title>
+    <mat-card-content><span class="text-3xl font-bold">{{ stats.sales | currency }}</span></mat-card-content>
+  </mat-card>
+  
+  
+</div>
+<ng-template #loadingTpl>
+  <mat-progress-spinner mode="indeterminate"></mat-progress-spinner> Loading stats...
+</ng-template>

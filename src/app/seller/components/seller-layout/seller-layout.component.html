@@ -1,0 +1,11 @@
+<!-- src/app/seller/components/seller-layout.component.html -->
+<mat-sidenav-container class="h-screen">
+    <mat-sidenav mode="side" opened>
+      <button mat-button routerLink="products">My Products</button>
+      <button mat-button routerLink="orders">Orders</button>
+    </mat-sidenav>
+    <mat-sidenav-content class="p-4">
+      <router-outlet></router-outlet>
+    </mat-sidenav-content>
+  </mat-sidenav-container>
+  
