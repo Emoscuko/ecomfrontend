@@ -6,9 +6,11 @@ import { environment } from '../../../../environments/environment';
 import { CartItem, CartService } from '../../../shared/services/cart.service';
 import { PaymentService } from '../../../shared/services/payment.service';
 import { firstValueFrom } from 'rxjs';
+import { Address, AddressService } from '../../../shared/services/address.service';
 
 interface OrderRequest {
   paymentIntentId: string;
+  addressId: number;
   items: { productId: number; quantity: number }[];
 }
 interface OrderResponse {
@@ -20,16 +22,27 @@ interface OrderResponse {
   selector: 'app-checkout',
   standalone: false,
   template: `
+  <mat-form-field appearance="fill" *ngIf="addresses.length">
+  <mat-label>Shipping address</mat-label>
+  <mat-select [(ngModel)]="selectedAddressId">
+    <mat-option *ngFor="let a of addresses" [value]="a.id">
+      {{ a.street }}, {{ a.city }} ({{ a.zip }})
+    </mat-option>
+  </mat-select>
+</mat-form-field>
+
     <form (submit)="pay($event)">
       <div id="card-element"></div>
       <button mat-raised-button color="primary" [disabled]="loading">
-        Pay {{ total | currency:'USD' }}
+        Pay {{ total | currency:'EUR' }}
       </button>
       <mat-error *ngIf="error">{{ error }}</mat-error>
     </form>
   `,
 })
 export class CheckoutComponent implements OnInit {
+  addresses: Address[] = [];
+  selectedAddressId!: number;
   private cartItems: CartItem[] = [];
   private stripe!: Stripe;
   private card!: StripeCardElement;
@@ -42,7 +55,8 @@ export class CheckoutComponent implements OnInit {
     private http: HttpClient,
     private cart: CartService,
     private payment: PaymentService,
-    private router: Router         /* ⬅️ injected */
+    private router: Router, 
+    private addressService: AddressService
   ) {}
 
   async ngOnInit() {
@@ -55,6 +69,10 @@ export class CheckoutComponent implements OnInit {
     this.cart.getItems().subscribe(items => {
       this.cartItems = items;
       this.total = items.reduce((s, i) => s + i.product.price * i.quantity, 0);
+    });
+    this.addressService.list().subscribe(a => {
+      this.addresses = a;
+      if (a.length) this.selectedAddressId = a[0].id!;
     });
   }
 

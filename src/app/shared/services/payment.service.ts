@@ -10,7 +10,7 @@ export interface Payment {
   userId: number;
   amount: number;
   currency: string;
-  status: 'PENDING' | 'SUCCESS' | 'FAILED';
+  status: 'PENDING' | 'SUCCESS' | 'FAILED' | 'REFUNDED';
   createdAt: string;
   order: { id: number };
 }
@@ -20,6 +20,12 @@ export class PaymentService {
 
   getStripePublicKey(): string {
     return environment.stripePublicKey;
+  }
+  cancelPayment(paymentId: number) {
+    return this.http.post(
+      `${environment.apiBaseUrl}/admin/payments/cancel/${paymentId}`,
+      {}
+    );
   }
 
   /** Call backend to create a Stripe PaymentIntent for the given amount (in smallest currency unit) */

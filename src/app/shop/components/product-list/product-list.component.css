@@ -1,0 +1,128 @@
+/* src/app/shop/components/product-list.component.css */
+
+/* Bileşen ana konteyneri */
+:host {
+    display: block;
+    padding: 1rem; /* Tailwind’in p-4 karşılığı */
+  }
+  
+  /* Başlık */
+  h2 {
+    font-size: 1.875rem;    /* text-3xl */
+    font-weight: 700;       /* font-bold */
+    margin-bottom: 1rem;    /* mb-4 */
+  }
+  
+  /* Arama ve filtre kontrolleri */
+  .controls {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;            /* space-y-2 */
+    margin-bottom: 1rem;    /* mb-4 */
+  }
+  
+  @media (min-width: 640px) {
+    .controls {
+      flex-direction: row;
+      justify-content: space-between;
+      align-items: center;
+      gap: 0;                /* sm:space-y-0 */
+    }
+  }
+  
+  /* Input ve select stilleri */
+  .controls input,
+  .controls select {
+    border: 1px solid #ffff00;   /* border */
+    padding: 0.25rem 0.75rem;    /* py-1 px-3 */
+    border-radius: 0.25rem;      /* rounded */
+    width: 100%;
+    font-size: 1rem;
+  }
+  
+  @media (min-width: 640px) {
+    .controls input {
+      width: 16rem;              /* sm:w-64 */
+    }
+  }
+  
+  /* Ürün ızgarası */
+  .product-grid {
+    display: grid;
+    grid-template-columns: 1fr;  /* grid-cols-1 */
+    gap: 1.5rem;                 /* gap-6 */
+  }
+  
+  @media (min-width: 640px) {
+    .product-grid {
+      grid-template-columns: repeat(2, 1fr); /* sm:grid-cols-2 */
+    }
+  }
+  
+  @media (min-width: 1024px) {
+    .product-grid {
+      grid-template-columns: repeat(4, 1fr); /* lg:grid-cols-4 */
+    }
+  }
+  
+  /* Angular Material Card özelleştirmeleri */
+  .mat-card {
+    border-radius: 0.5rem;       /* yuvarlak köşeler */
+    overflow: hidden;
+    transition: box-shadow 0.3s ease;
+  }
+  
+  .mat-card:hover {
+    box-shadow: 0 10px 15px rgba(0, 0, 0, 0.1); /* hover:shadow-lg */
+  }
+  
+  .mat-card-header {
+    padding: 0.75rem 1rem;
+  }
+  
+  .mat-card-title {
+    font-size: 1.25rem;
+    font-weight: 600;
+  }
+  
+  /* Ürün resmi */
+  .mat-card-image {
+    width: 100%;
+    height: 12rem;               /* h-48 */
+    object-fit: cover;           /* object-cover */
+  }
+  
+  /* İçerik ve fiyat */
+  .mat-card-content p {
+    margin: 0;
+  }
+  
+  .product-description {
+    color: #4a5568;              /* text-gray-700 */
+    /* slice:0:80 sonrası ... eklediğiniz için ekstra margin gerek yok */
+  }
+  
+  .product-price {
+    margin-top: 0.5rem;          /* mt-2 */
+    font-weight: 600;            /* font-semibold */
+  }
+  
+  /* Kart eylem butonları */
+  .mat-card-actions {
+    padding: 0.75rem 1rem;
+    display: flex;
+    gap: 0.5rem;
+  }
+  
+  .mat-card-actions a,
+  .mat-card-actions button {
+    text-transform: none;
+    font-weight: 500;
+  }
+  
+  /* Yükleniyor spinner kapsayıcısı */
+  .loading {
+    text-align: center;
+    padding: 2.5rem 0;           /* py-10 */
+  }
+  

@@ -15,6 +15,9 @@ const routes: Routes = [
     canLoad: [AuthGuard, AdminGuard],    // prevent loading module if not authorized
     canActivate: [AuthGuard, AdminGuard] // also guard navigation
   },
+  { path: 'profile',
+    loadChildren: () => import('./profile/profile.module').then(m => m.ProfileModule),
+    canLoad: [AuthGuard], canActivate: [AuthGuard] },
   { path: 'seller',
     loadChildren: () => import('./seller/seller.module').then(m => m.SellerModule),
     canLoad:    [AuthGuard],            // optionally SellerGuard here
