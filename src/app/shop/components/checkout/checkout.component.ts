@@ -7,43 +7,84 @@ import { CartItem, CartService } from '../../../shared/services/cart.service';
 import { PaymentService } from '../../../shared/services/payment.service';
 import { firstValueFrom } from 'rxjs';
 import { Address, AddressService } from '../../../shared/services/address.service';
+import { OrderService, Order } from '../../../shared/services/order.service';
 
-interface OrderRequest {
-  paymentIntentId: string;
-  addressId: number;
-  items: { productId: number; quantity: number }[];
-}
-interface OrderResponse {
-  id: number;
-  // … other fields if needed
-}
+interface OrderResponse extends Order {}
 
 @Component({
   selector: 'app-checkout',
   standalone: false,
   template: `
-  <mat-form-field appearance="fill" *ngIf="addresses.length">
-  <mat-label>Shipping address</mat-label>
-  <mat-select [(ngModel)]="selectedAddressId">
-    <mat-option *ngFor="let a of addresses" [value]="a.id">
-      {{ a.street }}, {{ a.city }} ({{ a.zip }})
-    </mat-option>
-  </mat-select>
-</mat-form-field>
+    <mat-card class="checkout-card">
+      <mat-card-header>
+        <mat-card-title>Checkout</mat-card-title>
+      </mat-card-header>
+      <mat-divider></mat-divider>
+      <mat-card-content>
+        <div class="checkout-grid">
+          <!-- Left: Payment & Address -->
+          <div class="checkout-form">
+            <mat-form-field appearance="fill" class="full-width">
+              <mat-label>Shipping address</mat-label>
+              <mat-select [(ngModel)]="selectedAddressId">
+                <mat-option *ngFor="let a of addresses" [value]="a.id">
+                  {{ a.street }}, {{ a.city }} {{ a.zip }}
+                </mat-option>
+              </mat-select>
+            </mat-form-field>
 
-    <form (submit)="pay($event)">
+            <div id="card-element" class="card-element"></div>
+            <mat-error *ngIf="error">{{ error }}</mat-error>
+
+            <form (submit)="pay($event)">
       <div id="card-element"></div>
       <button mat-raised-button color="primary" [disabled]="loading">
         Pay {{ total | currency:'EUR' }}
       </button>
       <mat-error *ngIf="error">{{ error }}</mat-error>
     </form>
+          </div>
+
+          <!-- Right: Order Summary -->
+          <div class="order-summary">
+            <h3>Order Summary</h3>
+            <mat-list>
+              <mat-list-item *ngFor="let item of cartItems">
+                <span>{{ item.product.name }} x {{ item.quantity }}</span>
+                <span class="item-price">{{ (item.product.price * item.quantity) | currency:'EUR' }}</span>
+              </mat-list-item>
+            </mat-list>
+            <mat-divider></mat-divider>
+            <div class="summary-total">
+              <span>Total:</span>
+              <span class="total-price">{{ total | currency:'EUR' }}</span>
+            </div>
+          </div>
+        </div>
+      </mat-card-content>
+    </mat-card>
   `,
+ 
+ styles: [
+  `
+  .checkout-card { max-width: 800px; margin: 2rem auto; }
+  .checkout-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 2rem; }
+  .full-width { width: 100%; }
+  .card-element { padding: 1rem 0; }
+  .pay-button { margin-top: 1rem; width: 100%; }
+  .order-summary { }
+  .item-price { margin-left: auto; }
+  .summary-total { display: flex; justify-content: space-between; font-weight: bold; margin-top: 1rem; }
+  @media (max-width: 600px) {
+    .checkout-grid { grid-template-columns: 1fr; }
+  }
+  `
+]
 })
 export class CheckoutComponent implements OnInit {
   addresses: Address[] = [];
   selectedAddressId!: number;
-  private cartItems: CartItem[] = [];
+   cartItems: CartItem[] = [];
   private stripe!: Stripe;
   private card!: StripeCardElement;
 
@@ -55,8 +96,9 @@ export class CheckoutComponent implements OnInit {
     private http: HttpClient,
     private cart: CartService,
     private payment: PaymentService,
-    private router: Router, 
-    private addressService: AddressService
+    private router: Router,
+    private addressService: AddressService,
+    private orderService: OrderService // ⬅︎ NEW: use the typed OrderService
   ) {}
 
   async ngOnInit() {
@@ -70,40 +112,37 @@ export class CheckoutComponent implements OnInit {
       this.cartItems = items;
       this.total = items.reduce((s, i) => s + i.product.price * i.quantity, 0);
     });
+
     this.addressService.list().subscribe(a => {
       this.addresses = a;
       if (a.length) this.selectedAddressId = a[0].id!;
     });
   }
 
-  /** Main payment flow */
+  /** Main checkout flow */
   async pay(e: Event) {
     e.preventDefault();
+    if (!this.selectedAddressId) {
+      this.error = 'Please choose a shipping address.';
+      return;
+    }
+
     this.loading = true;
     this.error = '';
 
     try {
-      // 1️⃣ Create the Order on your backend
-      const orderReq = {
-        items: this.cartItems.map(ci => ({
-          productId: ci.product.id,
-          quantity: ci.quantity
-        }))
-      };
+      // 1️⃣ Create the Order (now via OrderService) -------------
       const order = await firstValueFrom(
-        this.http.post<OrderResponse>(
-          `${environment.apiBaseUrl}/orders`,
-          orderReq
-        )
+        this.orderService.placeOrder(this.selectedAddressId)
       );
 
-      // 2️⃣ Create Stripe PaymentIntent, passing the new order ID
+      // 2️⃣ Create Stripe PaymentIntent -------------------------
       const cents = Math.round(this.total * 100);
       const { clientSecret } = await firstValueFrom(
         this.payment.createStripePaymentIntent(cents, order.id)
       );
 
-      // 3️⃣ Confirm card payment as before
+      // 3️⃣ Confirm card payment -------------------------------
       const { error, paymentIntent } = await this.stripe.confirmCardPayment(
         clientSecret,
         { payment_method: { card: this.card } }
@@ -115,7 +154,7 @@ export class CheckoutComponent implements OnInit {
       }
 
       if (paymentIntent!.status === 'succeeded') {
-        // 4️⃣ (Optional) patch your Order with the paymentIntentId, if needed:
+        // 4️⃣ Patch Order with paymentIntentId -----------------
         await firstValueFrom(
           this.http.patch(
             `${environment.apiBaseUrl}/orders/${order.id}`,

@@ -25,13 +25,17 @@ export class AdminProductFormComponent implements OnInit {
     private route: ActivatedRoute,
     private router: Router
   ) {
-    this.productForm = this.fb.group({
-      name: ['', [Validators.required]],
-      description: ['', []],
-      price: [0, [Validators.required, Validators.min(0)]],
-      categoryId: [null, [Validators.required]],
-      imageUrl: ['']
-    });
+    // in AdminProductFormComponent.constructor
+this.productForm = this.fb.group({
+  name: ['', Validators.required],
+  description: [''],
+  price: [0, [Validators.required, Validators.min(0)]],
+  stock: [0, [Validators.required, Validators.min(0)]],
+  categoryId: [null, Validators.required],
+  sellerId:   [null, Validators.required],   // ← new
+  imageUrl: ['']
+});
+
   }
 
   ngOnInit(): void {
@@ -49,7 +53,9 @@ export class AdminProductFormComponent implements OnInit {
           name: product.name,
           description: product.description,
           price: product.price,
+          stock:       product.stock,
           categoryId: product.category.id,
+          sellerId:   product.sellerId,   // ← new
           imageUrl: product.imageUrl
         });
       });

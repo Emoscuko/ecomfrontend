@@ -13,30 +13,36 @@ export class CartService {
     return this.cartItems$.asObservable();
   }
 
-  addItem(product: Product, quantity: number = 1): void {
-    const current = this.cartItems$.value;
-    const existingIndex = current.findIndex(item => item.product.id === product.id);
-    if (existingIndex >= 0) {
-      // If product already in cart, increase quantity
-      current[existingIndex].quantity += quantity;
-    } else {
-      current.push({ product, quantity });
+  addItem(product: Product, quantity = 1): void {                 // ► ①
+    const current = [...this.cartItems$.value];                   // copy for immutability
+    const idx = current.findIndex(ci => ci.product.id === product.id);
+    const existingQty = idx >= 0 ? current[idx].quantity : 0;
+    const desiredQty  = existingQty + quantity;
+  
+    if (desiredQty > product.stock) {                             // guard
+      alert(`Only ${product.stock} left in stock.`);
+      return;
     }
+  
+    if (idx >= 0) current[idx].quantity = desiredQty;
+    else           current.push({ product, quantity });
+  
     this.cartItems$.next(current);
   }
-
-  updateQuantity(productId: number, quantity: number): void {
-    const current = this.cartItems$.value;
+  
+  updateQuantity(productId: number, quantity: number): void {     // ► ②
+    const current = [...this.cartItems$.value];
     const item = current.find(ci => ci.product.id === productId);
-    if (item) {
-      item.quantity = quantity;
-      if (item.quantity <= 0) {
-        // remove item if quantity zero
-        this.removeItem(productId);
-      } else {
-        this.cartItems$.next(current);
-      }
+    if (!item) return;
+  
+    if (quantity > item.product.stock) {
+      alert(`Only ${item.product.stock} left in stock.`);
+      return;
     }
+  
+    item.quantity = quantity;
+    if (item.quantity <= 0) this.removeItem(productId);
+    else                    this.cartItems$.next(current);
   }
 
   removeItem(productId: number): void {

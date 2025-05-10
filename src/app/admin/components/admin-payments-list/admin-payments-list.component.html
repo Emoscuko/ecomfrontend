@@ -43,9 +43,10 @@
           <button
             mat-button
             (click)="cancel(p)"
-            [disabled]="p.status !== 'PENDING'">
-            Cancel
+            [disabled]="p.status == 'REFUNDED'">
+            Refund
           </button>
+
         </mat-cell>
       </ng-container>
   

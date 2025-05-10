@@ -17,6 +17,18 @@
         <mat-error *ngIf="productForm.get('price')?.hasError('required')">Price is required</mat-error>
       </mat-form-field>
       <mat-form-field class="w-full mb-3">
+        <mat-label>SellerID</mat-label>
+        <input matInput type="number" formControlName="sellerId">
+        </mat-form-field>
+      <mat-form-field class="w-full mb-3">
+        <mat-label>Stock</mat-label>
+        <input matInput type="number" formControlName="stock" required>
+        <mat-error *ngIf="productForm.get('stock')?.hasError('required')">
+          Stock is required
+        </mat-error>
+      </mat-form-field>
+      
+      <mat-form-field class="w-full mb-3">
         <mat-label>Category</mat-label>
         <mat-select formControlName="categoryId" required>
           <mat-option *ngFor="let cat of categories" [value]="cat.id">{{ cat.name }}</mat-option>

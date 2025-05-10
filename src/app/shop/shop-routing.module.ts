@@ -7,6 +7,7 @@ import { CheckoutComponent } from './components/checkout/checkout.component';
 import { OrderHistoryComponent } from './components/order-history/order-history.component';
 import { AuthGuard } from '../shared/guards/auth.guard';
 import { CompareComponent } from './components/compare/compare.component';
+import { OrderDetailComponent } from './components/order-detail/order-detail.component';
 
 const routes: Routes = [
   { path: '', component: ProductListComponent },                  // home page: product listing
@@ -15,6 +16,8 @@ const routes: Routes = [
   { path: 'checkout', component: CheckoutComponent, canActivate: [AuthGuard] }, // checkout (requires login)
   { path: 'orders', component: OrderHistoryComponent, canActivate: [AuthGuard] }, // order history (requires login)
   { path: 'compare', component: CompareComponent },
+  // customer
+ { path: 'orders/:id', component: OrderDetailComponent, canActivate:[AuthGuard] },
 
 ];
 

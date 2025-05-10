@@ -14,8 +14,13 @@
           <td class="p-2">{{ item.product.name }}</td>
           <td class="p-2">{{ item.product.price | currency }}</td>
           <td class="p-2">
-            <input type="number" [ngModel]="item.quantity" (ngModelChange)="updateQuantity(item, $event)" 
-                   min="1" class="w-16 border rounded text-center" />
+            <input type="number"
+       [ngModel]="item.quantity"
+       (ngModelChange)="updateQuantity(item, $event)"
+       min="1"
+       [max]="item.product.stock"
+       class="w-16 border rounded text-center" />
+
           </td>
           <td class="p-2">{{ (item.product.price * item.quantity) | currency }}</td>
           <td class="p-2 text-right">

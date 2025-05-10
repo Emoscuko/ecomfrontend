@@ -15,6 +15,7 @@ export class SidebarComponent {
     { label: 'Orders', icon: 'receipt_long', route: '/admin/orders' },
     { label: 'Users', icon: 'people', route: '/admin/users' },
     { label: 'Applications', icon: 'assignment', route: '/admin/seller-requests' },
-    { label: 'Payments', icon: 'payments', route: '/admin/payments' }
+    { label: 'Payments', icon: 'payments', route: '/admin/payments' },
+    { label : 'Refund Requests', icon: 'assignment', route: '/admin/refund-requests' }
   ];
 }

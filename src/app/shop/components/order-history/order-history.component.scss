@@ -1,0 +1,9 @@
+:host { display:block; }
+
+.order-card {
+  @apply border border-neutral-200 rounded p-3 mb-4 transition-shadow;
+  &:hover { @apply shadow-card; }
+}
+
+button[mat-button] { @apply text-primary; }
+ul { @apply list-disc list-inside mt-2 space-y-1; }

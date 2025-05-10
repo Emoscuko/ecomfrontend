@@ -1,28 +1,53 @@
 <!-- src/app/admin/components/admin-product-list.component.html -->
+
 <div class="flex justify-between items-center mb-4">
-    <h2 class="text-xl font-bold">Products</h2>
-    <button mat-raised-button color="primary" (click)="addProduct()">Add Product</button>
-  </div>
-  <table class="min-w-full border">
-    <tr class="bg-gray-100">
-      <th class="p-2">ID</th>
-      <th class="p-2">Name</th>
-      <th class="p-2">Price</th>
-      <th class="p-2">Category</th>
-      <th class="p-2 text-right">Actions</th>
-    </tr>
-    <tr *ngFor="let prod of products" class="border-t">
-      <td class="p-2">{{ prod.id }}</td>
-      <td class="p-2">{{ prod.name }}</td>
-      <td class="p-2">{{ prod.price | currency }}</td>
-      <td class="p-2">{{ prod.categoryName || prod.category.name }}</td>
-      <td class="p-2 text-right">
-        <button mat-button color="accent" (click)="editProduct(prod)">Edit</button>
-        <button mat-button color="warn" (click)="deleteProduct(prod)">Delete</button>
-      </td>
-    </tr>
-  </table>
-  <div *ngIf="loading" class="text-center my-4">
-    <mat-progress-spinner mode="indeterminate" diameter="30"></mat-progress-spinner>
-  </div>
-  
+  <h2 class="text-xl font-bold">Products</h2>
+  <button mat-raised-button color="primary" (click)="addProduct()">
+    Add Product
+  </button>
+</div>
+
+<table class="min-w-full border">
+  <tr class="bg-gray-100">
+    <th class="p-2">ID</th>
+    <th class="p-2">Name</th>
+    <th class="p-2">Price</th>
+    <th class="p-2">Category</th>
+    <th class="p-2 text-right">Actions</th>
+  </tr>
+  <tr *ngFor="let prod of products" class="border-t">
+    <td class="p-2">{{ prod.id }}</td>
+    <td class="p-2">{{ prod.name }}</td>
+    <td class="p-2">{{ prod.price | currency }}</td>
+    <td class="p-2">{{ prod.categoryName || prod.category.name }}</td>
+    <td class="p-2 text-right space-x-2">
+      <button mat-button color="accent" (click)="editProduct(prod)">
+        Edit
+      </button>
+
+      <!-- Show Deactivate when active -->
+      <button
+        *ngIf="prod.active"
+        mat-button
+        color="warn"
+        (click)="deleteProduct(prod)"
+      >
+        Deactivate
+      </button>
+
+      <!-- Show Activate when inactive -->
+      <button
+        *ngIf="!prod.active"
+        mat-button
+        color="primary"
+        (click)="activateProduct(prod)"
+      >
+        Activate
+      </button>
+    </td>
+  </tr>
+</table>
+
+<div *ngIf="loading" class="text-center my-4">
+  <mat-progress-spinner mode="indeterminate" diameter="30"></mat-progress-spinner>
+</div>

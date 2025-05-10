@@ -1,0 +1,20 @@
+<h2 mat-dialog-title>Request refund</h2>
+<mat-dialog-content [formGroup]="form">
+  <mat-form-field class="w-full">
+    <textarea
+      matInput
+      placeholder="Tell us why you’re requesting a refund"
+      rows="5"
+      formControlName="reason"
+    ></textarea>
+    <mat-error *ngIf="form.controls['reason'].hasError('required')">
+      Reason is required
+    </mat-error>
+  </mat-form-field>
+</mat-dialog-content>
+<mat-dialog-actions align="end">
+  <button mat-button mat-dialog-close>Cancel</button>
+  <button mat-raised-button color="primary" (click)="submit()" [disabled]="submitting">
+    Submit
+  </button>
+</mat-dialog-actions>

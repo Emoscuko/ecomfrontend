@@ -1,7 +1,8 @@
 // src/app/admin/components/admin-product-list.component.ts
+
 import { Component, OnInit } from '@angular/core';
-import { ProductService, Product } from '../../../shared/services/product.service';
 import { Router } from '@angular/router';
+import { ProductService, Product } from '../../../shared/services/product.service';
 
 @Component({
   selector: 'app-admin-product-list',
@@ -13,7 +14,10 @@ export class AdminProductListComponent implements OnInit {
   displayedColumns: string[] = ['id', 'name', 'price', 'category', 'actions'];
   loading = false;
 
-  constructor(private productService: ProductService, private router: Router) {}
+  constructor(
+    private productService: ProductService,
+    private router: Router
+  ) {}
 
   ngOnInit(): void {
     this.refresh();
@@ -21,9 +25,15 @@ export class AdminProductListComponent implements OnInit {
 
   refresh(): void {
     this.loading = true;
-    this.productService.getAll().subscribe({
-      next: products => { this.products = products; this.loading = false; },
-      error: () => { this.loading = false; /* handle error */ }
+    this.productService.getAllAdmin().subscribe({
+      next: products => {
+        this.products = products;
+        this.loading = false;
+      },
+      error: () => {
+        this.loading = false;
+        // handle error
+      }
     });
   }
 
@@ -36,11 +46,14 @@ export class AdminProductListComponent implements OnInit {
   }
 
   deleteProduct(product: Product): void {
-    if (confirm(`Delete product "${product.name}"?`)) {
-      this.productService.delete(product.id).subscribe(() => {
-        // After deletion, refresh list
-        this.refresh();
-      });
+    if (confirm(`Deactivate product "${product.name}"?`)) {
+      this.productService.delete(product.id).subscribe(() => this.refresh());
+    }
+  }
+
+  activateProduct(product: Product): void {
+    if (confirm(`Activate product "${product.name}"?`)) {
+      this.productService.activate(product.id).subscribe(() => this.refresh());
     }
   }
 }

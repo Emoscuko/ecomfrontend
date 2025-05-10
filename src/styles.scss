@@ -1,0 +1,58 @@
+/* 1 · Material must be first --------------------------- */
+@use '@angular/material' as mat;
+
+/* Material core reset */
+@include mat.core();
+
+/* 2 · Colour palettes (M2 helpers) --------------------- */
+$trendyol-primary: mat.m2-define-palette(mat.$m2-orange-palette, 600, 500, 700);
+$trendyol-accent:  mat.m2-define-palette(mat.$m2-grey-palette, 800);
+$trendyol-warn:    mat.m2-define-palette(mat.$m2-red-palette, 600);
+
+/* 3 · Theme map — NO typography key ------------------- */
+$trendyol-theme: mat.m2-define-light-theme((
+  color: (
+    primary: $trendyol-primary,
+    accent:  $trendyol-accent,
+    warn:    $trendyol-warn,
+  ),
+  density: 0,
+));
+
+@include mat.all-component-themes($trendyol-theme);
+
+/* 4 · Tailwind layers --------------------------------- */
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+
+/* 7) Your own utilities / overrides ------------------ */
+:root { --radius: 6px; --transition: 140ms ease; }
+
+html,body { @apply text-neutral-800 bg-neutral-50 font-['Roboto',sans-serif]; }
+
+/* … (badge, card, link, form, table rules) … */
+
+.badge {
+  @apply inline-flex items-center justify-center bg-primary text-white rounded-full text-[10px] leading-none h-5 min-w-[18px] px-1 font-medium;
+}
+
+/*  Card look  */
+mat-card {
+  @apply rounded shadow-card transition-transform duration-150;
+  &:hover { @apply shadow-hover -translate-y-[2px]; }
+}
+
+/*  Links  */
+a   { @apply text-primary hover:underline; }
+button[mat-button],button[mat-raised-button]{ @apply transition duration-150; }
+
+/*  Forms  */
+.mat-mdc-form-field { @apply rounded; }
+
+/*  Tables  */
+table { @apply w-full text-sm border-t border-b border-neutral-200; }
+th    { @apply bg-neutral-100 font-semibold text-left px-3 py-2; }
+td    { @apply px-3 py-2; }
+tr:hover td { @apply bg-neutral-50; }

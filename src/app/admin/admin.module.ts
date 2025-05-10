@@ -24,6 +24,9 @@ import { AdminUserListComponent } from './components/admin-user-list/admin-user-
 import { MatInputModule } from '@angular/material/input';
 import { AdminSellerRequestsComponent } from './components/admin-seller-requests/admin-seller-requests.component';
 import { AdminPaymentsListComponent } from './components/admin-payments-list/admin-payments-list.component';
+import { RefundRequestDialogComponent } from '../shop/components/refund-request-dialog/refund-request-dialog.component';
+import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
+import { RefundRequestsListComponent } from './refund-requests-list/refund-requests-list.component';
 
 @NgModule({
   declarations: [
@@ -35,13 +38,15 @@ import { AdminPaymentsListComponent } from './components/admin-payments-list/adm
     AdminOrderListComponent,
     AdminUserListComponent,
     AdminPaymentsListComponent,
-    AdminSellerRequestsComponent
+    AdminSellerRequestsComponent,
+    RefundRequestsListComponent,
   ],
   imports: [
     CommonModule,
     FormsModule, ReactiveFormsModule,
     AdminRoutingModule,
     SharedModule,
+    MatProgressSpinnerModule,
     MatToolbarModule, MatListModule, MatCardModule, MatTableModule,
     MatSelectModule, MatButtonModule, MatIconModule,MatOptionModule,
     MatFormFieldModule,MatInputModule

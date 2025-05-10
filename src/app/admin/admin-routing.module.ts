@@ -10,6 +10,7 @@ import { AdminUserListComponent } from './components/admin-user-list/admin-user-
 import { AdminGuard } from '../shared/guards/admin.guard';
 import { AdminSellerRequestsComponent } from './components/admin-seller-requests/admin-seller-requests.component';
 import { AdminPaymentsListComponent } from './components/admin-payments-list/admin-payments-list.component';
+import { RefundRequestsListComponent } from './refund-requests-list/refund-requests-list.component';
 
 const routes: Routes = [
   { path: '', component: AdminLayoutComponent, canActivate: [AdminGuard], 
@@ -22,7 +23,8 @@ const routes: Routes = [
       { path: 'categories', component: AdminCategoryListComponent },
       { path: 'orders', component: AdminOrderListComponent },
       { path: 'users', component: AdminUserListComponent },
-      { path: 'payments', component: AdminPaymentsListComponent }
+      { path: 'payments', component: AdminPaymentsListComponent },
+      { path: 'refund-requests', component: RefundRequestsListComponent },
 
     ] 
   }

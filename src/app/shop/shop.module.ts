@@ -18,6 +18,12 @@ import { OrderHistoryComponent } from './components/order-history/order-history.
 import { ApplyForSellerComponent } from './components/apply-for-seller/apply-for-seller.component';
 import { ReviewComponent } from './components/review/review.component';
 import { CompareComponent } from './components/compare/compare.component';
+import {  MatDialogModule } from '@angular/material/dialog';
+import { MatFormFieldModule } from '@angular/material/form-field';
+import { RefundRequestDialogComponent } from './components/refund-request-dialog/refund-request-dialog.component';
+import { OrderDetailComponent } from './components/order-detail/order-detail.component';
+import { MatTableModule } from '@angular/material/table';
+import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 
 @NgModule({
   declarations: [
@@ -28,7 +34,9 @@ import { CompareComponent } from './components/compare/compare.component';
     CompareComponent, 
     OrderHistoryComponent, 
     ApplyForSellerComponent,
-    ReviewComponent
+    ReviewComponent,
+    RefundRequestDialogComponent,
+    OrderDetailComponent
   ],
   imports: [
     CommonModule,
@@ -36,6 +44,10 @@ import { CompareComponent } from './components/compare/compare.component';
     ReactiveFormsModule,
     ShopRoutingModule,
     SharedModule,
+    MatDialogModule,
+    MatTableModule,
+    MatFormFieldModule,
+    MatProgressSpinnerModule,
     MatCardModule, MatButtonModule, MatSelectModule, MatInputModule, MatIconModule
   ]
 })

@@ -1,0 +1,9 @@
+:host { display:block; }
+
+mat-card {
+  cursor:pointer;
+  img         { @apply h-48 w-full object-cover rounded-t; }
+  mat-card-title{ @apply text-base font-semibold truncate; }
+  mat-card-content{ @apply space-y-2; }
+  mat-card-actions{ @apply flex justify-between items-center pt-2 px-4 pb-4; }
+}

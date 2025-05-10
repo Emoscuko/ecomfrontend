@@ -19,15 +19,18 @@ export class OrderService {
   constructor(private http: HttpClient, private cartService: CartService) {}
 
   /** Place a new order for the current user using cart items */
-  placeOrder() {
+  placeOrder(addressId: number) {
     // We might need to send cart items to backend. Let's gather items:
     const items = this.cartService['cartItems$'].value.map(ci => ({
+      
       productId: ci.product.id,
       quantity: ci.quantity
     }));
-    return this.http.post<Order>(`${this.api}`, { items });
+    return this.http.post<Order>(`${this.api}`, { addressId, items });
   }
-
+  getOrderById(id: number) {
+       return this.http.get<Order>(`${this.api}/${id}`);
+     }
   /** Get orders for current logged-in user */
   getMyOrders() {
     return this.http.get<Order[]>(`${this.api}`);

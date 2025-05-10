@@ -1,0 +1,6 @@
+:host { display:block; }
+
+img     { @apply border border-neutral-200; }
+h2      { @apply text-3xl font-semibold text-neutral-900; }
+.price  { @apply text-2xl font-bold text-primary; }
+input[type="number"] { @apply border border-neutral-300 rounded text-center w-16; }
