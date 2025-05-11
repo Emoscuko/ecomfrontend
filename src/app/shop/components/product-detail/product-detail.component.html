@@ -10,12 +10,12 @@
           <!-- Quantity input -->
 <input type="number" [(ngModel)]="quantity"
 min="1"
-[max]="product?.stock ?? null"
+[max]="product.stock"
 class="w-16 text-center border rounded" />
 
 <button mat-raised-button color="primary"
  (click)="addToCart()"
- [disabled]="product?.stock === 0">
+ [disabled]="product.stock === 0">
 Add to Cart
 </button>
 
